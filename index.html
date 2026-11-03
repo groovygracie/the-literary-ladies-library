@@ -369,6 +369,14 @@ function closeReader() {
   document.getElementById("readerModal").style.display = "none";
 }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://naucbsgebgrmltckvhwm.supabase.co/rest/v1/";
+  const SUPABASE_KEY = "sb_publishable_4vZv-JieKncW63p4guTg9w_FS76xBjg";
 
-</body>
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+</script></body>
 </html>
