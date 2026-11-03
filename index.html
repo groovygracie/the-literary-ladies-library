@@ -232,8 +232,47 @@ footer {
 </head>
 
 <body>
+<div id="login-screen" style="
+  display:none;
+  min-height:100vh;
+  background:#171812;
+  color:#e9dcc0;
+  text-align:center;
+  padding:100px 20px;
+  font-family:Georgia,serif;
+">
+  <p style="color:#aa946b;letter-spacing:5px;font-size:10px;">
+    THE LITERARY LADIES' LIBRARY
+  </p>
 
-<header>
+  <h1 style="font-weight:normal;">
+    Welcome, dear reader.
+  </h1>
+
+  <p style="color:#ad9b7c;font-style:italic;">
+    Your little corner of the literary world awaits.
+  </p>
+
+  <input
+    id="login-email"
+    type="email"
+    placeholder="Enter your invited email address"
+    style="padding:13px;width:280px;max-width:90%;margin:20px 0;background:#e9dfc9;border:1px solid #aa946b;"
+  >
+
+  <br>
+
+  <button id="login-button" style="
+    background:#49372a;
+    color:#eadfc8;
+    border:1px solid #aa8a5d;
+    padding:13px 25px;
+  ">
+    Enter the Library
+  </button>
+
+  <p id="login-message" style="color:#c5ae83;"></p>
+</div><header>
   <div class="small">ESTABLISHED MMXXVI · PRIVATE COLLECTION</div>
   <h1>The Literary Ladies' Library</h1>
   <div class="subtitle">A home for stories yet to be told.</div>
@@ -378,5 +417,63 @@ function closeReader() {
     SUPABASE_URL,
     SUPABASE_KEY
   );
+</script>
+<script>
+  // Check whether a member already has a valid session.
+  async function checkLibrarySession() {
+    const { data: { session }, error } =
+      await supabaseClient.auth.getSession();
+
+    const loginScreen = document.getElementById("login-screen");
+    const library = document.querySelector("header");
+
+    if (error || !session) {
+      loginScreen.style.display = "block";
+      library.style.display = "none";
+      document.querySelector("nav").style.display = "none";
+      document.querySelector(".intro").style.display = "none";
+      document.querySelector(".library").style.display = "none";
+      document.querySelector("footer").style.display = "none";
+    } else {
+      loginScreen.style.display = "none";
+      library.style.display = "block";
+      document.querySelector("nav").style.display = "block";
+      document.querySelector(".intro").style.display = "block";
+      document.querySelector(".library").style.display = "block";
+      document.querySelector("footer").style.display = "block";
+    }
+  }
+
+  // Send a magic link to the invited email address.
+  document.getElementById("login-button").addEventListener("click", async () => {
+    const email = document.getElementById("login-email").value.trim();
+    const message = document.getElementById("login-message");
+
+    if (!email) {
+      message.textContent = "Please enter your email address.";
+      return;
+    }
+
+    message.textContent = "Sending your library key...";
+
+    const { error } = await supabaseClient.auth.signInWithOtp({
+      email,
+      options: {
+        shouldCreateUser: false,
+        emailRedirectTo: "https://groovygracie.github.io/the-literary-ladies-library/"
+      }
+    });
+
+    message.textContent = error
+      ? error.message
+      : "Your library key is on its way. Please check your inbox!";
+  });
+
+  // Watch for sign-in changes, including magic-link returns.
+  supabaseClient.auth.onAuthStateChange(() => {
+    checkLibrarySession();
+  });
+
+  checkLibrarySession();
 </script></body>
 </html>
