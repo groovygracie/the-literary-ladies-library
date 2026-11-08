@@ -402,29 +402,58 @@ function closeReader() {
     SUPABASE_KEY
   );
 </script>
+
 <script>
-  // Check whether a member already has a valid session.
+  // Show the library only to signed-in members.
+  function showLibrary(isSignedIn) {
+    document.getElementById("login-screen").style.display =
+      isSignedIn ? "none" : "block";
+
+    ["header", "nav", ".intro", ".library", "footer"].forEach(selector => {
+      const element = document.querySelector(selector);
+      if (element) {
+        element.style.display = isSignedIn ? "" : "none";
+      }
+    });
+  }
+
+  // Fetch books from Supabase and display them.
+  async function loadBooks() {
+    const shelf = document.querySelector(".books");
+    shelf.innerHTML = "";
+
+    const { data: books, error } = await supabaseClient
+      .from("books")
+      .select("id, title")
+      .order("created_at");
+
+    if (error) {
+      console.error("Could not load books:", error);
+      shelf.textContent = "The books could not be loaded.";
+      return;
+    }
+
+    books.forEach(book => {
+      const cover = document.createElement("div");
+      cover.className = "book";
+
+      const name = document.createElement("span");
+      name.textContent = book.title;
+
+      cover.appendChild(name);
+      shelf.appendChild(cover);
+    });
+  }
+
+  // Check whether a member is signed in.
   async function checkLibrarySession() {
     const { data: { session }, error } =
       await supabaseClient.auth.getSession();
 
-    const loginScreen = document.getElementById("login-screen");
-    const library = document.querySelector("header");
+    showLibrary(!error && !!session);
 
-    if (error || !session) {
-      loginScreen.style.display = "block";
-      library.style.display = "none";
-      document.querySelector("nav").style.display = "none";
-      document.querySelector(".intro").style.display = "none";
-      document.querySelector(".library").style.display = "none";
-      document.querySelector("footer").style.display = "none";
-    } else {
-      loginScreen.style.display = "none";
-      library.style.display = "block";
-      document.querySelector("nav").style.display = "block";
-      document.querySelector(".intro").style.display = "block";
-      document.querySelector(".library").style.display = "block";
-      document.querySelector("footer").style.display = "block";
+    if (!error && session) {
+      await loadBooks();
     }
   }
 
@@ -453,11 +482,16 @@ function closeReader() {
       : "Your library key is on its way. Please check your inbox!";
   });
 
-  // Watch for sign-in changes, including magic-link returns.
-  supabaseClient.auth.onAuthStateChange(() => {
-    checkLibrarySession();
+  // Watch for sign-in changes.
+  supabaseClient.auth.onAuthStateChange((event, session) => {
+    showLibrary(!!session);
+
+    if (session) {
+      loadBooks();
+    }
   });
 
   checkLibrarySession();
-</script></body>
+</script>
+</body>
 </html>
