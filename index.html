@@ -449,13 +449,13 @@ async function uploadChapter() {
     const { error: saveError } = await supabaseClient
       .from("chapters")
       .insert({
-        book_id: currentBookId,
-        owner_id: user.id,
-        file_name: file.name,
-        content: content,
-        storage_path: storagePath
-      });
-
+  book_id: currentBookId,
+  owner_id: user.id,
+  title: file.name.replace(/\.[^.]+$/, ""),
+  file_name: file.name,
+  content: content,
+  storage_path: storagePath
+});
     if (saveError) throw saveError;
 
     const bookName = document.getElementById("bookTitle")
