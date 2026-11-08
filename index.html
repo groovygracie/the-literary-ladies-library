@@ -509,14 +509,13 @@ shelf.appendChild(cover);
   });
 
   // Watch for sign-in changes.
-  supabaseClient.auth.onAuthStateChange((event, session) => {
-    showLibrary(!!session);
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  showLibrary(!!session);
 
-    if (session) {
-      loadBooks();
-    }
-  });
-
+  if (event === "SIGNED_IN" && session) {
+    loadBooks();
+  }
+});
   checkLibrarySession();
 </script>
 </body>
