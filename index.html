@@ -380,6 +380,96 @@ function openUpload() {
 function closeUpload() {
   document.getElementById("uploadModal").style.display = "none";
 }
+  
+async function uploadChapter() {
+  const fileInput = document.getElementById("chapterFile");
+  const file = fileInput.files[0];
+
+  if (!file) {
+    alert("Please choose a Word document or PDF first.");
+    return;
+  }
+
+  if (!currentBookId) {
+    alert("Please open a book first.");
+    return;
+  }
+
+  const extension = file.name.split(".").pop().toLowerCase();
+
+  if (!["docx", "pdf"].includes(extension)) {
+    alert("Please choose a .docx or .pdf file.");
+    return;
+  }
+
+  try {
+    const { data: { user }, error: userError } =
+      await supabaseClient.auth.getUser();
+
+    if (userError || !user) {
+      throw new Error("Please sign in again.");
+    }
+
+    const arrayBuffer = await file.arrayBuffer();
+    let content = "";
+
+    if (extension === "docx") {
+      const result = await mammoth.extractRawText({ arrayBuffer });
+      content = result.value;
+    } else {
+      const pdf = await pdfjsLib.getDocument({
+        data: new Uint8Array(arrayBuffer)
+      }).promise;
+
+      for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+        const page = await pdf.getPage(pageNumber);
+        const text = await page.getTextContent();
+
+        content += text.items.map(item => item.str).join(" ") + "\n\n";
+      }
+    }
+
+    if (!content.trim()) {
+      throw new Error("No readable text was found in this document.");
+    }
+
+    const safeName = file.name.replace(/[^\w.\- ]/g, "_");
+    const storagePath =
+      user.id + "/" + crypto.randomUUID() + "-" + safeName;
+
+    const { error: uploadError } = await supabaseClient
+      .storage
+      .from("literary-writings")
+      .upload(storagePath, file, {
+        contentType: file.type || "application/octet-stream"
+      });
+
+    if (uploadError) throw uploadError;
+
+    const { error: saveError } = await supabaseClient
+      .from("chapters")
+      .insert({
+        book_id: currentBookId,
+        owner_id: user.id,
+        file_name: file.name,
+        content: content,
+        storage_path: storagePath
+      });
+
+    if (saveError) throw saveError;
+
+    const bookName = document.getElementById("bookTitle")
+      .textContent.replace("The Writings of ", "");
+
+    alert("Your chapter has been added!");
+    closeUpload();
+    await openBook(currentBookId, bookName);
+
+  } catch (error) {
+    console.error("Chapter upload error:", error);
+    alert("We couldn't upload your chapter: " + error.message);
+  }
+}
 async function openBook(bookId, bookName) {
   document.getElementById("bookTitle").textContent =
     "The Writings of " + bookName;
