@@ -463,7 +463,11 @@ function closeReader() {
       name.textContent = book.title;
 
       cover.appendChild(name);
-      shelf.appendChild(cover);
+
+cover.style.cursor = "pointer";
+cover.addEventListener("click", () => openBook(book.id, book.title));
+
+shelf.appendChild(cover);
     });
   }
 
