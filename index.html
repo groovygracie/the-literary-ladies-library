@@ -394,17 +394,17 @@ async function openBook(bookId, bookName) {
 }
 
 
-function openChapter(index) {
-  const chapter = sampleChapters[index];
 
+function openSavedChapter(chapter) {
   document.getElementById("chapterTitle").textContent =
-    chapter.title;
+    chapter.file_name || "Untitled chapter";
 
   document.getElementById("chapterText").textContent =
-    chapter.text;
+    chapter.content || "This chapter is currently empty.";
 
   document.getElementById("readerModal").style.display = "block";
 }
+
 
 function closeModal() {
   document.getElementById("bookModal").style.display = "none";
