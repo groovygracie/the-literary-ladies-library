@@ -345,19 +345,41 @@ const sampleChapters = [
   }
 ];
 
-function openBook(name) {
+
+async function openBook(bookId, bookName) {
   document.getElementById("bookTitle").textContent =
-    "The Writings of " + name;
+    "The Writings of " + bookName;
 
-  const chapters = document.getElementById("chapters");
-  chapters.innerHTML = "";
+  const chaptersList = document.getElementById("chapters");
+  chaptersList.innerHTML = "<p>Opening the book...</p>";
 
-  sampleChapters.forEach((chapter, index) => {
+  document.getElementById("bookModal").style.display = "block";
+
+  const { data: chapters, error } = await supabaseClient
+    .from("chapters")
+    .select("id, file_name, content")
+    .eq("book_id", bookId)
+    .order("created_at");
+
+  chaptersList.innerHTML = "";
+
+  if (error) {
+    chaptersList.textContent = "Sorry, we couldn't load the chapters.";
+    console.error(error);
+    return;
+  }
+
+  if (!chapters || chapters.length === 0) {
+    chaptersList.textContent = "No writings have been added to this book yet.";
+    return;
+  }
+
+  chapters.forEach((chapter) => {
     const item = document.createElement("div");
     item.className = "chapter";
 
     const title = document.createElement("span");
-    title.textContent = chapter.title;
+    title.textContent = chapter.file_name || "Untitled chapter";
 
     const arrow = document.createElement("span");
     arrow.textContent = "→";
@@ -365,12 +387,12 @@ function openBook(name) {
     item.appendChild(title);
     item.appendChild(arrow);
 
-    item.onclick = () => openChapter(index);
-    chapters.appendChild(item);
-  });
+    item.onclick = () => openSavedChapter(chapter);
 
-  document.getElementById("bookModal").style.display = "block";
+    chaptersList.appendChild(item);
+  });
 }
+
 
 function openChapter(index) {
   const chapter = sampleChapters[index];
