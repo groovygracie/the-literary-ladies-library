@@ -364,10 +364,25 @@ const sampleChapters = [
 ];
 
 
+let currentBookId = null;
+
+function openUpload() {
+  if (!currentBookId) {
+    alert("Please open a book first.");
+    return;
+  }
+
+  document.getElementById("chapterFile").value = "";
+  document.getElementById("uploadModal").style.display = "block";
+}
+
+function closeUpload() {
+  document.getElementById("uploadModal").style.display = "none";
+}
 async function openBook(bookId, bookName) {
   document.getElementById("bookTitle").textContent =
     "The Writings of " + bookName;
-
+currentBookId = bookId;
   const chaptersList = document.getElementById("chapters");
   chaptersList.innerHTML = "<p>Opening the book...</p>";
 
