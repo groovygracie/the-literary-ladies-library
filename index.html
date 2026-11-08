@@ -314,6 +314,24 @@ footer {
   </div>
 </div>
 
+<div class="modal" id="uploadModal">
+  <div class="modal-content">
+    <button class="close" onclick="closeUpload()">×</button>
+    <p class="subtitle">THE LITERARY LADIES' LIBRARY</p>
+    <h2>Add a Chapter</h2>
+    <p>Choose a Word document or PDF to add to your book.</p>
+
+    <input
+      type="file"
+      id="chapterFile"
+      accept=".docx,.pdf"
+    />
+
+    <button class="action" onclick="closeUpload()">
+      Cancel
+    </button>
+  </div>
+</div>
 <div class="modal" id="readerModal">
   <div class="modal-content">
     <button class="close" onclick="closeReader()">×</button>
