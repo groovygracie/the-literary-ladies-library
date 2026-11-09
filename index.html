@@ -315,7 +315,30 @@ footer {
   font-size: 2rem;
   text-shadow: 1px 2px 4px #00000080;
   letter-spacing: 1px;
-}</style>
+/* ORNATE ANTIQUE GOLD BOOK SPINES */
+
+.book::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 7px;
+  width: 3px;
+  background: linear-gradient(
+    to right,
+    #8c642e,
+    #f5d78c,
+    #b58a45,
+    #f5d78c
+  );
+  box-shadow: 1px 0 4px #00000088;
+  border-radius: 2px;
+}
+
+.book {
+  outline: 1px solid #c49b55;
+  outline-offset: -5px;
+}}</style>
 </head>
 
 <body>
