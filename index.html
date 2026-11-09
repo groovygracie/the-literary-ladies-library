@@ -228,6 +228,71 @@ footer {
   .books { gap: 7px; }
   .modal-content { padding: 22px; }
 }
+  
+/* THE LITERARY LADIES' LIBRARY
+   CHERRY RED DARK ACADEMIA THEME */
+
+:root {
+  --cherry-dark: #260d13;
+  --burgundy: #4b1421;
+  --deep-red: #741e30;
+  --cherry: #a52a40;
+  --cream: #f1e4d5;
+  --gold: #b99a68;
+}
+
+body {
+  background-color: var(--cherry-dark) !important;
+  color: var(--cream) !important;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+header, nav {
+  background-color: #351019 !important;
+  color: var(--cream) !important;
+  border-bottom: 1px solid var(--gold);
+}
+
+h1, h2, h3 {
+  color: #d6a0a5 !important;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.intro, .library {
+  background-color: transparent !important;
+  color: var(--cream) !important;
+}
+
+.book {
+  background: linear-gradient(145deg, #8d293d, #3b101b) !important;
+  color: #f5e5d8 !important;
+  border: 2px solid var(--gold) !important;
+  border-radius: 5px !important;
+  box-shadow: 4px 5px 12px #00000080;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.book:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px #a52a4055;
+}
+
+button {
+  background-color: var(--deep-red) !important;
+  color: var(--cream) !important;
+  border: 1px solid var(--gold) !important;
+  border-radius: 5px !important;
+  font-family: Georgia, serif;
+}
+
+button:hover {
+  background-color: var(--cherry) !important;
+}
+
+footer {
+  color: #d6a0a5 !important;
+  border-top: 1px solid var(--gold);
+}
 </style>
 </head>
 
