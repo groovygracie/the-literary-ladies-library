@@ -84,13 +84,16 @@ nav {
 }
 }
 
+
 .books {
-  display: flex;
-  align-items: end;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-end;
   justify-content: center;
   gap: 9px;
   min-height: 0;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  width: 100%;
 }
 
 .book {
