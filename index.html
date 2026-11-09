@@ -116,6 +116,38 @@ nav {
   text-shadow: 0 1px 3px #000;
 }
 
+/* VICTORIAN ANTIQUE BRASS CORNER BRACKETS */
+
+.shelf::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  pointer-events: none;
+  z-index: 2;
+
+  background:
+    linear-gradient(90deg, #f0d28a, #9c7136)
+      left top / 30px 4px no-repeat,
+    linear-gradient(180deg, #f0d28a, #9c7136)
+      left top / 4px 30px no-repeat,
+
+    linear-gradient(90deg, #9c7136, #f0d28a)
+      right top / 30px 4px no-repeat,
+    linear-gradient(180deg, #f0d28a, #9c7136)
+      right top / 4px 30px no-repeat,
+
+    linear-gradient(90deg, #f0d28a, #9c7136)
+      left bottom / 30px 4px no-repeat,
+    linear-gradient(180deg, #9c7136, #f0d28a)
+      left bottom / 4px 30px no-repeat,
+
+    linear-gradient(90deg, #9c7136, #f0d28a)
+      right bottom / 30px 4px no-repeat,
+    linear-gradient(180deg, #9c7136, #f0d28a)
+      right bottom / 4px 30px no-repeat;
+
+  filter: drop-shadow(1px 2px 2px #000);
+}
 
 
 .books {
