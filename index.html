@@ -884,6 +884,90 @@ shelf.appendChild(cover);
     });
   }
 
+  // Load the shared Weekly Writing Parlour prompt.
+  async function loadWeeklyPrompt() {
+    const titleElement = document.getElementById("weeklyPromptTitle");
+    const textElement = document.getElementById("weeklyPromptText");
+    const archiveElement = document.getElementById("promptArchive");
+
+    const { data: settings, error: settingsError } = await supabaseClient
+      .from("writing_parlour_settings")
+      .select("launch_date")
+      .single();
+
+    if (settingsError || !settings) {
+      titleElement.textContent = "Our writing prompt is resting...";
+      return;
+    }
+
+    // Get today's date in UK time.
+    const parts = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Europe/London",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).formatToParts(new Date());
+
+    const datePart = type => parts.find(part => part.type === type).value;
+    const today = `${datePart("year")}-${datePart("month")}-${datePart("day")}`;
+
+    const launchDate = new Date(settings.launch_date + "T00:00:00Z");
+    const todayDate = new Date(today + "T00:00:00Z");
+    const daysSinceLaunch = Math.floor(
+      (todayDate - launchDate) / 86400000
+    );
+
+    if (daysSinceLaunch < 0) {
+      titleElement.textContent = "Our first prompt arrives Monday 16 November!";
+      textElement.textContent = "The Parlour is getting ready...";
+      return;
+    }
+
+    const currentWeek = Math.floor(daysSinceLaunch / 7) + 1;
+
+    if (currentWeek > 52) {
+      titleElement.textContent = "Our first 52 weeks are complete!";
+      textElement.textContent = "Thank you for a wonderful year of writing.";
+      return;
+    }
+
+    const { data: prompts, error } = await supabaseClient
+      .from("weekly_prompts")
+      .select("week_number, title, prompt")
+      .lte("week_number", currentWeek)
+      .order("week_number", { ascending: false });
+
+    if (error || !prompts || prompts.length === 0) {
+      titleElement.textContent = "Our prompt could not be loaded.";
+      return;
+    }
+
+    const currentPrompt = prompts.find(
+      prompt => prompt.week_number === currentWeek
+    );
+
+    if (currentPrompt) {
+      titleElement.textContent = currentPrompt.title;
+      textElement.textContent = currentPrompt.prompt;
+    }
+
+    archiveElement.innerHTML = "";
+
+    prompts
+      .filter(prompt => prompt.week_number < currentWeek)
+      .forEach(prompt => {
+        const entry = document.createElement("div");
+        const heading = document.createElement("h4");
+        const description = document.createElement("p");
+
+        heading.textContent = `Week ${prompt.week_number}: ${prompt.title}`;
+        description.textContent = prompt.prompt;
+
+        entry.appendChild(heading);
+        entry.appendChild(description);
+        archiveElement.appendChild(entry);
+      });
+  }
   // Check whether a member is signed in.
   async function checkLibrarySession() {
     const { data: { session }, error } =
@@ -893,7 +977,7 @@ shelf.appendChild(cover);
 
     if (!error && session) {
       await loadBooks();
-    }
+      await loadWeeklyPrompt();    }
   }
 
   // Send a magic link to the invited email address.
@@ -926,8 +1010,9 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
   showLibrary(!!session);
 
   if (event === "SIGNED_IN" && session) {
-    loadBooks();
-  }
+  loadBooks();
+  loadWeeklyPrompt();
+}
 });
   checkLibrarySession();
 </script>
