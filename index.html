@@ -574,6 +574,71 @@ footer {
 .login-candle {
   animation: candleGlow 3s ease-in-out infinite;
 }
+
+/* THE SECRET VICTORIAN LETTER */
+
+#secret-letter {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: radial-gradient(ellipse, #54202d, #170a10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  box-sizing: border-box;
+}
+
+.letter-content {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  padding: 35px 28px;
+  box-sizing: border-box;
+  text-align: center;
+  color: #eadfc8;
+  font-family: Georgia, serif;
+  background: linear-gradient(145deg, #3b101b, #260d13);
+  border: 3px double #d6b36a;
+  box-shadow: 0 0 35px #00000099;
+}
+
+.letter-content h2 {
+  color: #e4c58c;
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-weight: normal;
+  font-size: 30px;
+}
+
+.letter-content h3 {
+  color: #d6b36a;
+  font-family: Georgia, serif;
+  font-style: italic;
+}
+
+.letter-content p {
+  line-height: 1.8;
+}
+
+.letter-content img.literary-key {
+  display: block;
+  width: 130px;
+  max-width: 45%;
+  height: auto;
+  margin: 20px auto;
+  filter: drop-shadow(0 0 12px #d6b36a88);
+}
+
+#unlock-library {
+  background: linear-gradient(135deg, #741e30, #3b101b);
+  color: #f1d9a8;
+  border: 1px solid #d6b36a;
+  padding: 13px 25px;
+  font-family: Georgia, serif;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
 </style>
 </head>
 
@@ -621,7 +686,42 @@ footer {
   src="victorian-candle-quill.png"
   alt="A glowing candle and a feather quill"
   class="login-candle"
-></div><header>
+></div>
+
+
+<div id="secret-letter" style="display:none;">
+  <div class="letter-content">
+    <p>✦ THE LITERARY LADIES' LIBRARY ✦</p>
+    <h2>A Letter for You</h2>
+
+    <p>Dearest Reader,</p>
+
+    <p>
+      Within these walls lie stories, secrets and the imagination
+      of five literary ladies.
+    </p>
+
+    <p>
+      A little key has been entrusted to you.
+      Use it wisely, for it opens the doors to our most treasured world.
+    </p>
+
+    <img
+      src="literary-golden-key.png"
+      alt="An antique golden key"
+      class="literary-key"
+    >
+
+    <h3>Unlock the Library</h3>
+
+    <button id="unlock-library">Unlock the Library ♡</button>
+
+    <p>With love, The Literary Ladies</p>
+  </div>
+</div>
+
+
+ <header>
   <div class="small">ESTABLISHED MMXXVI · PRIVATE COLLECTION</div>
   <h1>The Literary Ladies' Library</h1>
   <div class="subtitle">A home for stories yet to be told.</div>
@@ -930,6 +1030,13 @@ function closeReader() {
     });
   }
 
+  // Unlock the library when the button is clicked.
+document.getElementById("unlock-library").addEventListener("click", function() {
+  document.getElementById("secret-letter").style.display = "none";
+});
+
+
+
   // Fetch books from Supabase and display them.
   async function loadBooks() {
     const shelf = document.querySelector(".books");
@@ -1046,6 +1153,7 @@ shelf.appendChild(cover);
         archiveElement.appendChild(entry);
       });
   }
+  
   // Check whether a member is signed in.
   async function checkLibrarySession() {
     const { data: { session }, error } =
@@ -1055,7 +1163,9 @@ shelf.appendChild(cover);
 
     if (!error && session) {
       await loadBooks();
-      await loadWeeklyPrompt();    }
+      await loadWeeklyPrompt();
+      document.getElementById("secret-letter").style.display = "flex";
+    }
   }
 
   // Send a magic link to the invited email address.
@@ -1084,14 +1194,16 @@ shelf.appendChild(cover);
   });
 
   // Watch for sign-in changes.
-supabaseClient.auth.onAuthStateChange((event, session) => {
-  showLibrary(!!session);
+  supabaseClient.auth.onAuthStateChange((event, session) => {
+    showLibrary(!!session);
 
-  if (event === "SIGNED_IN" && session) {
-  loadBooks();
-  loadWeeklyPrompt();
-}
-});
+    if (event === "SIGNED_IN" && session) {
+      loadBooks();
+      loadWeeklyPrompt();
+      document.getElementById("secret-letter").style.display = "flex";
+    }
+  });
+
   checkLibrarySession();
 </script>
 </body>
