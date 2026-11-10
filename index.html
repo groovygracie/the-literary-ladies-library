@@ -639,6 +639,127 @@ footer {
   letter-spacing: 1px;
   cursor: pointer;
 }
+
+/* ANTIQUE SECRET LETTER ENVELOPE */
+
+#sealed-envelope {
+  text-align: center;
+  width: 100%;
+  max-width: 480px;
+  padding: 30px 15px;
+  box-sizing: border-box;
+  animation: envelopeAppear 1.2s ease both;
+}
+
+.envelope-heading {
+  color: #e4c58c;
+  font-family: Georgia, serif;
+  letter-spacing: 3px;
+  font-size: 12px;
+  margin-bottom: 30px;
+}
+
+.envelope {
+  position: relative;
+  width: 290px;
+  max-width: 85%;
+  height: 190px;
+  margin: 0 auto;
+  cursor: pointer;
+  background: linear-gradient(145deg, #d6bd91, #a9875e);
+  border: 2px solid #80603e;
+  box-shadow: 0 12px 30px #00000099;
+  overflow: visible;
+}
+
+.envelope-paper {
+  position: absolute;
+  inset: 8px;
+  background: #e8d5b2;
+  border: 1px solid #b99a68;
+}
+
+.envelope::before,
+.envelope::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  z-index: 2;
+}
+
+.envelope::before {
+  left: 0;
+  border-width: 95px 145px 0 0;
+  border-color: transparent #b99a73 transparent transparent;
+}
+
+.envelope::after {
+  right: 0;
+  border-width: 95px 0 0 145px;
+  border-color: transparent transparent transparent #c9aa80;
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 145px solid transparent;
+  border-right: 145px solid transparent;
+  border-top: 110px solid #d1b48a;
+  z-index: 3;
+  filter: drop-shadow(0 2px 2px #00000033);
+}
+
+.wax-seal {
+  position: absolute;
+  z-index: 4;
+  top: 73px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e7c78d;
+  font-size: 25px;
+  background: radial-gradient(circle at 35% 30%, #a52a40, #641020 75%);
+  border: 3px solid #7b2632;
+  box-shadow: 0 3px 8px #00000066, inset 0 0 5px #e7a1a155;
+}
+
+.envelope-invitation {
+  color: #eadfc8;
+  font-family: Georgia, serif;
+  font-style: italic;
+  margin-top: 30px;
+}
+
+.envelope-click {
+  color: #d6b36a;
+  font-size: 13px;
+}
+
+@keyframes envelopeAppear {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+#welcome-letter {
+  margin: 0 auto;
+  animation: envelopeAppear 1s ease both;
+}
 </style>
 </head>
 
@@ -689,8 +810,25 @@ footer {
 ></div>
 
 
+
 <div id="secret-letter" style="display:none;">
-  <div class="letter-content">
+
+  <!-- CLOSED ENVELOPE -->
+  <div id="sealed-envelope">
+    <p class="envelope-heading">A LITTLE SOMETHING FOR YOU</p>
+
+    <div class="envelope" id="open-envelope">
+      <div class="envelope-flap"></div>
+      <div class="envelope-paper"></div>
+      <div class="wax-seal">✦</div>
+    </div>
+
+    <p class="envelope-invitation">You have received a secret letter...</p>
+    <p class="envelope-click">Click the seal to open ♡</p>
+  </div>
+
+  <!-- OPEN LETTER -->
+  <div class="letter-content" id="welcome-letter" style="display:none;">
     <p>✦ THE LITERARY LADIES' LIBRARY ✦</p>
     <h2>A Letter for You</h2>
 
@@ -718,6 +856,7 @@ footer {
 
     <p>With love, The Literary Ladies</p>
   </div>
+
 </div>
 
 
@@ -1034,8 +1173,11 @@ function closeReader() {
 document.getElementById("unlock-library").addEventListener("click", function() {
   document.getElementById("secret-letter").style.display = "none";
 });
-
-
+// Open the secret envelope.
+document.getElementById("open-envelope").addEventListener("click", function() {
+  document.getElementById("sealed-envelope").style.display = "none";
+  document.getElementById("welcome-letter").style.display = "block";
+});
 
   // Fetch books from Supabase and display them.
   async function loadBooks() {
