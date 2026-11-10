@@ -446,8 +446,61 @@ footer {
   font-weight: normal;
   font-style: normal;
 }
+/* WEEKLY WRITING PARLOUR */
 
-</style>
+.writing-parlour {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 35px 25px;
+  text-align: center;
+  background: linear-gradient(180deg, #3b101b, #260d13);
+  border: 3px double #b99a68;
+  box-shadow: 0 10px 25px #00000088;
+  color: #f1e4d5;
+}
+
+.writing-parlour h2 {
+  color: #d6b36a;
+  font-size: 2rem;
+  letter-spacing: 2px;
+}
+
+.parlour-intro {
+  color: #e2c9a5;
+  font-style: italic;
+  margin-bottom: 30px;
+}
+
+.weekly-prompt {
+  padding: 25px;
+  border: 1px solid #b99a68;
+  background: #4b1421;
+  margin: 20px 0;
+}
+
+.prompt-week {
+  color: #d6b36a;
+  letter-spacing: 3px;
+  font-size: 11px;
+}
+
+.weekly-prompt h3,
+.prompt-archive h3 {
+  color: #f1d9a8;
+}
+
+.weekly-prompt p:last-child {
+  line-height: 1.8;
+}
+
+.prompt-archive {
+  margin-top: 35px;
+}
+
+#promptArchive {
+  text-align: left;
+  line-height: 1.8;
+}</style>
 </head>
 
 <body>
@@ -514,8 +567,21 @@ footer {
   <div class="shelf-label">✦ THE AUTHORS' COLLECTION ✦</div>
 </div>
 </main>
+<section class="writing-parlour">
+  <h2>✦ The Weekly Writing Parlour ✦</h2>
+  <p class="parlour-intro">A little inspiration for the literary ladies.</p>
 
-<div class="modal" id="bookModal">
+  <div class="weekly-prompt">
+    <p class="prompt-week">THIS WEEK'S WRITING PROMPT</p>
+    <h3 id="weeklyPromptTitle">Loading this week's inspiration...</h3>
+    <p id="weeklyPromptText"></p>
+  </div>
+
+  <div class="prompt-archive">
+    <h3>✦ Previous Prompts ✦</h3>
+    <div id="promptArchive"></div>
+  </div>
+</section><div class="modal" id="bookModal">
   <div class="modal-content">
     <button class="close" onclick="closeModal()">×</button>
     <h2 id="bookTitle">The Writings of...</h2>
