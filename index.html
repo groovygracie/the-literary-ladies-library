@@ -496,7 +496,59 @@ footer {
 #promptArchive {
   text-align: left;
   line-height: 1.8;
-}</style>
+}
+
+/* ROMANTIC VICTORIAN LOGIN PAGE */
+
+#login-screen {
+  background:
+    radial-gradient(ellipse at center, #54202d 0%, #300f19 55%, #170a10 100%) !important;
+  color: #f1e4d5 !important;
+  font-family: Georgia, serif !important;
+  padding: 100px 20px !important;
+  position: relative;
+}
+
+#login-screen::before {
+  content: "";
+  position: absolute;
+  inset: 25px;
+  border: 2px double #b99a68;
+  pointer-events: none;
+}
+
+#login-screen h1 {
+  color: #e4c58c;
+  font-family: Georgia, serif;
+  font-size: 38px;
+  text-shadow: 2px 3px 8px #000;
+  margin: 30px 0;
+}
+
+#login-screen input {
+  border: 1px solid #c5a46a !important;
+  background: #f1e4d5 !important;
+  color: #35131d;
+  border-radius: 3px;
+  font-family: Georgia, serif;
+}
+
+#login-screen button {
+  background: linear-gradient(135deg, #741e30, #3b101b) !important;
+  color: #f1d9a8 !important;
+  border: 1px solid #d6b36a !important;
+  border-radius: 3px;
+  font-family: Georgia, serif;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background .3s, transform .3s;
+}
+
+#login-screen button:hover {
+  background: #8e2639 !important;
+  transform: translateY(-2px);
+}
+</style>
 </head>
 
 <body>
@@ -507,7 +559,7 @@ footer {
   color:#e9dcc0;
   text-align:center;
   padding:100px 20px;
-    font-family:'Victorian Parlor',serif;">
+  font-family:Georgia,serif;">
 <p style="color:#aa946b;letter-spacing:5px;font-size:10px;font-family:Georgia,serif;">
     THE LITERARY LADIES' LIBRARY
   </p>
