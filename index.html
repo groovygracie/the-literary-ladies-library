@@ -557,7 +557,24 @@ footer {
   filter: drop-shadow(0 0 18px #d6b36a88);
   position: relative;
   z-index: 1;
-}</style>
+}
+
+@keyframes candleGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 14px #d6b36a66);
+    opacity: 0.96;
+  }
+
+  50% {
+    filter: drop-shadow(0 0 27px #f5c96b99);
+    opacity: 1;
+  }
+}
+
+.login-candle {
+  animation: candleGlow 3s ease-in-out infinite;
+}
+</style>
 </head>
 
 <body>
