@@ -1204,11 +1204,19 @@ function closeReader() {
 document.getElementById("unlock-library").addEventListener("click", function() {
   document.getElementById("secret-letter").style.display = "none";
 });
-// Open the secret envelope.
+
+// Open the secret envelope with an animation.
 document.getElementById("open-envelope").addEventListener("click", function() {
-  document.getElementById("sealed-envelope").style.display = "none";
-  document.getElementById("welcome-letter").style.display = "block";
+  const envelope = document.getElementById("open-envelope");
+
+  envelope.classList.add("opening");
+
+  setTimeout(function() {
+    document.getElementById("sealed-envelope").style.display = "none";
+    document.getElementById("welcome-letter").style.display = "block";
+  }, 850);
 });
+
 
   // Fetch books from Supabase and display them.
   async function loadBooks() {
