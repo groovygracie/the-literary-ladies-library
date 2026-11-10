@@ -760,6 +760,37 @@ footer {
   margin: 0 auto;
   animation: envelopeAppear 1s ease both;
 }
+
+/* MAGICAL ENVELOPE OPENING ANIMATION */
+
+.wax-seal {
+  animation: sealGlow 2.5s ease-in-out infinite;
+  transition: opacity .5s ease, transform .5s ease;
+}
+
+@keyframes sealGlow {
+  0%, 100% {
+    box-shadow: 0 3px 8px #00000066, 0 0 5px #a52a40;
+  }
+  50% {
+    box-shadow: 0 3px 8px #00000066, 0 0 20px #d64b61;
+  }
+}
+
+.envelope.opening .envelope-flap {
+  transform: rotateX(180deg);
+  transform-origin: top;
+  transition: transform .8s ease;
+}
+
+.envelope.opening .wax-seal {
+  opacity: 0;
+  transform: translateX(-50%) scale(1.5);
+}
+
+.envelope.opening {
+  pointer-events: none;
+}
 </style>
 </head>
 
