@@ -926,7 +926,7 @@ footer {
 
 
 <div id="secret-letter" style="display:none;">
-<audio id="secret-letter-music" loop>
+<audio id="secret-letter-music" loop preload="auto">
   <source src="secret-letter-music.mp3" type="audio/mpeg">
 </audio>  <!-- CLOSED ENVELOPE -->
   <div id="sealed-envelope">
@@ -1301,16 +1301,16 @@ document.getElementById("open-envelope").addEventListener("click", function() {
 
   envelope.classList.add("opening");
 
-  music.load();
-music.currentTime = 0;
+  music.pause();
+  music.currentTime = 0;
 
-const playback = music.play();
+  const playback = music.play();
 
-if (playback !== undefined) {
-  playback.catch(error => {
-    console.log("Music could not play:", error);
-  });
-}
+  if (playback !== undefined) {
+    playback.catch(error => {
+      console.log("Music could not play:", error);
+    });
+  }
 
   setTimeout(function() {
     document.getElementById("sealed-envelope").style.display = "none";
