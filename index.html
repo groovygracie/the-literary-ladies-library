@@ -1294,7 +1294,6 @@ document.getElementById("unlock-library").addEventListener("click", function() {
   document.getElementById("secret-letter").style.display = "none";
 });
 
-// Open the secret envelope with an animation.
 // Open the secret envelope and play its music.
 document.getElementById("open-envelope").addEventListener("click", function() {
   const envelope = document.getElementById("open-envelope");
@@ -1302,20 +1301,10 @@ document.getElementById("open-envelope").addEventListener("click", function() {
 
   envelope.classList.add("opening");
 
-  setTimeout(function() {
-    document.getElementById("sealed-envelope").style.display = "none";
-    document.getElementById("welcome-letter").style.display = "block";
-
-    music.currentTime = 0;
-    music.play().catch(error => {
-      console.log("Music could not play:", error);
-    });
-
-  }, 850);
-});.getElementById("open-envelope").addEventListener("click", function() {
-  const envelope = document.getElementById("open-envelope");
-
-  envelope.classList.add("opening");
+  music.currentTime = 0;
+  music.play().catch(error => {
+    console.log("Music could not play:", error);
+  });
 
   setTimeout(function() {
     document.getElementById("sealed-envelope").style.display = "none";
