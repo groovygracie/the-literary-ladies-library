@@ -926,8 +926,9 @@ footer {
 
 
 <div id="secret-letter" style="display:none;">
-
-  <!-- CLOSED ENVELOPE -->
+<audio id="secret-letter-music" loop>
+  <source src="secret-letter-music.mp3" type="audio/mpeg">
+</audio>  <!-- CLOSED ENVELOPE -->
   <div id="sealed-envelope">
     <p class="envelope-heading">A LITTLE SOMETHING FOR YOU</p>
 
@@ -1283,13 +1284,35 @@ function closeReader() {
     });
   }
 
-  // Unlock the library when the button is clicked.
+// Unlock the library and stop the secret letter music.
 document.getElementById("unlock-library").addEventListener("click", function() {
+  const music = document.getElementById("secret-letter-music");
+
+  music.pause();
+  music.currentTime = 0;
+
   document.getElementById("secret-letter").style.display = "none";
 });
 
 // Open the secret envelope with an animation.
+// Open the secret envelope and play its music.
 document.getElementById("open-envelope").addEventListener("click", function() {
+  const envelope = document.getElementById("open-envelope");
+  const music = document.getElementById("secret-letter-music");
+
+  envelope.classList.add("opening");
+
+  setTimeout(function() {
+    document.getElementById("sealed-envelope").style.display = "none";
+    document.getElementById("welcome-letter").style.display = "block";
+
+    music.currentTime = 0;
+    music.play().catch(error => {
+      console.log("Music could not play:", error);
+    });
+
+  }, 850);
+});.getElementById("open-envelope").addEventListener("click", function() {
   const envelope = document.getElementById("open-envelope");
 
   envelope.classList.add("opening");
